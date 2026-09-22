@@ -59,8 +59,8 @@
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/wellintel.git
-cd wellintel
+git clone https://github.com/yhiremath34-tech/WELL-INTEL.git
+cd WELL-INTEL
 
 # Install dependencies
 npm install
