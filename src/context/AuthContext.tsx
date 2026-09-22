@@ -10,18 +10,7 @@ export interface AuthContextType {
   adminSignIn: (email: string, pass: string) => Promise<{ error?: string }>;
   signUp: (email: string, pass: string, name: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
-  loginAsDemoUser: () => void;
 }
-
-const DEMO_USER_PROFILE: UserProfile = {
-  id: 'usr-demo-01',
-  email: 'citizen.scout@wellintel.org',
-  full_name: 'Aditi Hegde',
-  avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  role: 'user',
-  created_at: '2024-01-10T10:00:00Z',
-  updated_at: '2026-09-20T12:00:00Z',
-};
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -31,7 +20,6 @@ const AuthContext = createContext<AuthContextType>({
   adminSignIn: async () => ({}),
   signUp: async () => ({}),
   signOut: async () => {},
-  loginAsDemoUser: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -40,16 +28,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const saved = localStorage.getItem('wellintel_auth_user');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Cleanse legacy demo admin mock from previous sessions
-        if (parsed.id === 'usr-admin-01' || parsed.email === 'admin.director@wellintel.gov.in') {
+        // Purge legacy demo users or demo admins
+        if (
+          parsed.id === 'usr-demo-01' ||
+          parsed.id === 'usr-admin-01' ||
+          parsed.email === 'citizen.scout@wellintel.org' ||
+          parsed.email === 'admin.director@wellintel.gov.in'
+        ) {
           localStorage.removeItem('wellintel_auth_user');
-          return DEMO_USER_PROFILE;
+          return null;
         }
         return parsed;
       }
-      return DEMO_USER_PROFILE; // pre-load citizen demo profile for frictionless exploration
+      return null; // Visitors unconditionally start signed out
     } catch {
-      return DEMO_USER_PROFILE;
+      return null;
     }
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +78,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setUser(profile);
           localStorage.setItem('wellintel_auth_user', JSON.stringify(profile));
+        } else {
+          // If no session, ensure user is null
+          const saved = localStorage.getItem('wellintel_auth_user');
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              if (parsed.id === 'usr-demo-01' || parsed.id === 'usr-admin-01') {
+                localStorage.removeItem('wellintel_auth_user');
+                setUser(null);
+              }
+            } catch {
+              localStorage.removeItem('wellintel_auth_user');
+              setUser(null);
+            }
+          }
         }
         setIsLoading(false);
       });
@@ -119,6 +127,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setUser(profile);
           localStorage.setItem('wellintel_auth_user', JSON.stringify(profile));
+        } else {
+          setUser(null);
+          localStorage.removeItem('wellintel_auth_user');
         }
       });
 
@@ -235,7 +246,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!isAdmin) {
       return {
         error:
-          'Access Denied: Invalid administrator credentials. (Hint: admin@wellintel.gov.in / admin123)',
+          'Access Denied: Invalid administrator credentials. (admin@wellintel.gov.in / admin123)',
       };
     }
 
@@ -309,11 +320,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('wellintel_auth_user');
   };
 
-  const loginAsDemoUser = () => {
-    setUser(DEMO_USER_PROFILE);
-    localStorage.setItem('wellintel_auth_user', JSON.stringify(DEMO_USER_PROFILE));
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -324,7 +330,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         adminSignIn,
         signUp,
         signOut,
-        loginAsDemoUser,
       }}
     >
       {children}

@@ -15,7 +15,7 @@ import { useAuth } from '../context/AuthContext';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, signUp, loginAsDemoUser } = useAuth();
+  const { signIn, signUp } = useAuth();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -50,11 +50,6 @@ export const Login: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleQuickDemo = () => {
-    loginAsDemoUser();
-    navigate('/dashboard');
   };
 
   return (
@@ -124,21 +119,6 @@ export const Login: React.FC = () => {
             </p>
           </div>
 
-          {/* Quick Demo Access for Hackathon Evaluator */}
-          <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 space-y-2">
-            <div className="text-[11px] font-mono text-cyan-300 font-bold uppercase flex items-center justify-between">
-              <span>Quick Evaluation Access</span>
-              <KeyRound className="w-3.5 h-3.5" />
-            </div>
-            <button
-              type="button"
-              onClick={handleQuickDemo}
-              className="w-full py-2 px-3 rounded-xl text-xs font-semibold bg-navy-900 hover:bg-navy-850 text-cyan-300 border border-cyan-500/30 transition-colors text-center flex items-center justify-center gap-2"
-            >
-              <span>Instant Demo Access as Observer Scout (Aditi Hegde)</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
 
           {error && (
             <div className="p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-xs text-rose-300">

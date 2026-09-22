@@ -180,9 +180,11 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Link
                     to="/login"
-                    className="text-xs font-medium text-slate-300 hover:text-cyan-300 px-3 py-1.5"
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-navy-900 border border-slate-700/80 text-slate-200 hover:text-white hover:border-cyan-400/50 hover:bg-navy-850 transition-all shadow-sm group"
+                    title="Sign In"
                   >
-                    Login
+                    <UserIcon className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+                    <span>Login</span>
                   </Link>
                   <Link
                     to="/map"
@@ -283,9 +285,10 @@ export const Navbar: React.FC = () => {
                     <Link
                       to="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="text-center py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-200"
+                      className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-200 border border-slate-700 hover:border-cyan-500/40"
                     >
-                      Login
+                      <UserIcon className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Login</span>
                     </Link>
                     <Link
                       to="/map"
