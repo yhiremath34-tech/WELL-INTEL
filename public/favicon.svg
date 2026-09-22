@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#168AAD" />
+      <stop offset="100%" stop-color="#083344" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="12" fill="#071A2B" />
+  <circle cx="24" cy="24" r="16" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="2 2" />
+  <circle cx="24" cy="24" r="11" stroke="#14B8A6" stroke-width="2" stroke-opacity="0.6" />
+  <path d="M24 10C24 10 16 20 16 26C16 30.4183 19.5817 34 24 34C28.4183 34 32 30.4183 32 26C32 20 24 10 24 10Z" fill="url(#waterGrad)" />
+  <circle cx="21" cy="23" r="2.5" fill="#FFFFFF" fill-opacity="0.8" />
+</svg>

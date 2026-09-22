@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-inter);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .text-gradient-water {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-water-400 via-teal-400 to-cyan-300;
+  }
+  
+  .text-gradient-cyan {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-water-400 to-teal-400;
+  }
+
+  .text-gradient-glow {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-200 to-water-300;
+  }
+
+  .glass-nav {
+    background: rgba(7, 26, 43, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+  }
+
+  .glass-card {
+    background: rgba(11, 35, 58, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.12);
+  }
+
+  .glass-card-light {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(22, 138, 173, 0.15);
+  }
+
+  .glow-box-cyan {
+    box-shadow: 0 0 30px -5px rgba(56, 189, 248, 0.25);
+  }
+
+  .glow-box-teal {
+    box-shadow: 0 0 30px -5px rgba(20, 184, 166, 0.25);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(6, 19, 31, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.5);
+}
+
+/* Leaflet Custom styling */
+.leaflet-container {
+  font-family: var(--font-inter) !important;
+  background-color: #06131f !important;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-bar a {
+  background-color: #071A2B !important;
+  color: #38BDF8 !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: #0B233A !important;
+  color: #FFFFFF !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(7, 26, 43, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  color: #F0F9FF !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6) !important;
+  padding: 4px !important;
+}
+
+.leaflet-popup-tip {
+  background: #071A2B !important;
+}
+
+/* Wavy water container */
+@keyframes waterFlow {
+  0% { transform: translateX(0) translateZ(0) scaleY(1); }
+  50% { transform: translateX(-25%) translateZ(0) scaleY(0.85); }
+  100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+}
+
+.animate-water-flow {
+  animation: waterFlow 10s ease-in-out infinite alternate;
+}
