@@ -12,9 +12,9 @@ import {
   Sun,
   Menu,
   X,
-  ShieldAlert,
   LogOut,
   Sparkles,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useScrollPosition } from '../../hooks/useScrollPosition';
 import { useTheme } from '../../context/ThemeContext';
@@ -23,7 +23,7 @@ import { useAuth } from '../../context/AuthContext';
 export const Navbar: React.FC = () => {
   const { isScrolled } = useScrollPosition();
   const { theme, toggleTheme } = useTheme();
-  const { user, signOut, loginAsDemoAdmin, loginAsDemoUser } = useAuth();
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,6 +34,7 @@ export const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Explore', path: '/explore' },
     { name: 'Live Map', path: '/map' },
+    { name: 'Water Intel', path: '/water-intelligence' },
     { name: 'Analytics', path: '/analytics' },
     { name: 'Reports', path: '/reports' },
   ];
@@ -109,25 +110,6 @@ export const Navbar: React.FC = () => {
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
 
-              {/* Admin Portal Quick Link */}
-              {user?.role === 'admin' ? (
-                <Link
-                  to="/admin"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition-colors"
-                >
-                  <ShieldAlert className="w-3.5 h-3.5" />
-                  <span>Admin Hub</span>
-                </Link>
-              ) : (
-                <button
-                  onClick={loginAsDemoAdmin}
-                  className="text-[11px] text-cyan-400 hover:underline px-2 py-1"
-                  title="Switch to Demo Admin"
-                >
-                  Switch Admin
-                </button>
-              )}
-
               {/* User Profile or Login */}
               {user ? (
                 <div className="relative">
@@ -161,6 +143,14 @@ export const Navbar: React.FC = () => {
 
                         <div className="py-1">
                           <Link
+                            to="/dashboard"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-300 hover:text-white hover:bg-water-500/10 rounded-lg transition-colors"
+                          >
+                            <LayoutDashboard className="w-3.5 h-3.5" />
+                            <span>My Dashboard</span>
+                          </Link>
+                          <Link
                             to="/profile"
                             onClick={() => setProfileDropdownOpen(false)}
                             className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-300 hover:text-white hover:bg-water-500/10 rounded-lg transition-colors"
@@ -168,16 +158,6 @@ export const Navbar: React.FC = () => {
                             <UserIcon className="w-3.5 h-3.5" />
                             <span>My Profile</span>
                           </Link>
-                          {user.role === 'admin' && (
-                            <Link
-                              to="/admin"
-                              onClick={() => setProfileDropdownOpen(false)}
-                              className="flex items-center gap-2 px-3 py-1.5 text-xs text-rose-300 hover:text-rose-200 hover:bg-rose-500/10 rounded-lg transition-colors"
-                            >
-                              <ShieldAlert className="w-3.5 h-3.5" />
-                              <span>Admin Dashboard</span>
-                            </Link>
-                          )}
                         </div>
 
                         <div className="pt-1 border-t border-slate-800">
@@ -275,21 +255,19 @@ export const Navbar: React.FC = () => {
                       </div>
                     </div>
                     <Link
+                      to="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-center py-2 rounded-xl text-xs font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30"
+                    >
+                      My Dashboard
+                    </Link>
+                    <Link
                       to="/profile"
                       onClick={() => setMobileMenuOpen(false)}
                       className="text-center py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-200"
                     >
                       Profile & Reports
                     </Link>
-                    {user.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-center py-2 rounded-xl text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30"
-                      >
-                        Admin Dashboard
-                      </Link>
-                    )}
                     <button
                       onClick={() => {
                         signOut();

@@ -24,12 +24,39 @@ export const Home: React.FC = () => {
     distance: idx === 0 ? 0.8 : idx === 1 ? 1.2 : 2.4,
   }));
 
+  const [broadcast, setBroadcast] = React.useState<any>(() => {
+    try {
+      const saved = localStorage.getItem('wellintel_website_content');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   return (
     <div className="relative min-h-screen bg-navy-950 text-slate-100 overflow-hidden">
       {/* ========================================================================= */}
+      {/* ADMIN CONTROLLED BROADCAST ADVISORY BANNER */}
+      {/* ========================================================================= */}
+      {broadcast?.broadcastEnabled && (
+        <div
+          className={`pt-18 pb-2 px-4 text-center text-xs font-semibold flex items-center justify-center gap-2 border-b z-30 relative transition-all ${
+            broadcast.broadcastType === 'alert'
+              ? 'bg-rose-950/90 text-rose-200 border-rose-500/40'
+              : broadcast.broadcastType === 'warning'
+              ? 'bg-amber-950/90 text-amber-200 border-amber-500/40'
+              : 'bg-cyan-950/90 text-cyan-200 border-cyan-500/40'
+          }`}
+        >
+          <Radio className="w-3.5 h-3.5 animate-pulse shrink-0 text-rose-400" />
+          <span>{broadcast.broadcastMessage}</span>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
       {/* 1 & 2. HERO SECTION */}
       {/* ========================================================================= */}
-      <section className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-hero-gradient">
+      <section className="relative min-h-screen flex items-center justify-center pt-20 pb-16 overflow-hidden bg-hero-gradient">
         {/* Subtle Ambient Particle Luminescence */}
         <ParticleCanvas count={55} />
 

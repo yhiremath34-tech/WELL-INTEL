@@ -5,29 +5,38 @@ import {
   Layers,
   FileCheck,
   Users,
-  Settings,
   ArrowLeft,
   ShieldAlert,
   Droplets,
   LogOut,
+  Globe,
+  Activity,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const AdminLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut, role } = useAuth();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
     { name: 'Well Management', path: '/admin/wells', icon: Layers },
+    { name: 'Water Quality Data', path: '/admin/water', icon: Droplets },
     { name: 'Community Reports', path: '/admin/reports', icon: FileCheck },
     { name: 'Users & Roles', path: '/admin/users', icon: Users },
+    { name: 'Website Content CMS', path: '/admin/content', icon: Globe },
+    { name: 'Activity & Audit Log', path: '/admin/activity', icon: Activity },
   ];
 
   const isActive = (path: string) => {
     if (path === '/admin') return location.pathname === '/admin';
     return location.pathname.startsWith(path);
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/admin/login');
   };
 
   return (
@@ -59,7 +68,7 @@ export const AdminLayout: React.FC = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     active
                       ? 'bg-rose-500/20 text-rose-200 border border-rose-500/30 font-bold shadow-sm'
                       : 'text-slate-400 hover:text-white hover:bg-navy-850'
@@ -76,7 +85,7 @@ export const AdminLayout: React.FC = () => {
         {/* Bottom Sidebar Footing */}
         <div className="pt-6 border-t border-slate-800 mt-6 space-y-3">
           <Link
-            to="/explore"
+            to="/"
             className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold bg-navy-950 text-cyan-300 border border-cyan-500/20 hover:bg-navy-850 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -84,15 +93,13 @@ export const AdminLayout: React.FC = () => {
           </Link>
 
           <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-            <span className="truncate">{user?.full_name || 'Admin'}</span>
+            <span className="truncate max-w-[120px]">{user?.full_name || 'Admin'}</span>
             <button
-              onClick={() => {
-                signOut();
-                navigate('/login');
-              }}
-              className="text-rose-400 hover:text-rose-300 font-bold"
+              onClick={handleLogout}
+              className="text-rose-400 hover:text-rose-300 font-bold flex items-center gap-1"
             >
-              Log Out
+              <LogOut className="w-3 h-3" />
+              <span>Log Out</span>
             </button>
           </div>
         </div>

@@ -15,7 +15,7 @@ import { useAuth } from '../context/AuthContext';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, signUp, loginAsDemoUser, loginAsDemoAdmin } = useAuth();
+  const { signIn, signUp, loginAsDemoUser } = useAuth();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -35,14 +35,14 @@ export const Login: React.FC = () => {
         if (res.error) {
           setError(res.error);
         } else {
-          navigate('/explore');
+          navigate('/dashboard');
         }
       } else {
         const res = await signIn(email, password);
         if (res.error) {
           setError(res.error);
         } else {
-          navigate('/explore');
+          navigate('/dashboard');
         }
       }
     } catch (err: any) {
@@ -52,14 +52,9 @@ export const Login: React.FC = () => {
     }
   };
 
-  const handleQuickDemo = (type: 'user' | 'admin') => {
-    if (type === 'admin') {
-      loginAsDemoAdmin();
-      navigate('/admin');
-    } else {
-      loginAsDemoUser();
-      navigate('/explore');
-    }
+  const handleQuickDemo = () => {
+    loginAsDemoUser();
+    navigate('/dashboard');
   };
 
   return (
@@ -129,28 +124,20 @@ export const Login: React.FC = () => {
             </p>
           </div>
 
-          {/* Quick Demo Logins for Hackathon Evaluator */}
+          {/* Quick Demo Access for Hackathon Evaluator */}
           <div className="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 space-y-2">
             <div className="text-[11px] font-mono text-cyan-300 font-bold uppercase flex items-center justify-between">
-              <span>Demo Quick-Access (Zero Setup)</span>
+              <span>Quick Evaluation Access</span>
               <KeyRound className="w-3.5 h-3.5" />
             </div>
-            <div className="grid grid-cols-2 gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('user')}
-                className="py-2 px-3 rounded-xl text-xs font-semibold bg-navy-900 hover:bg-navy-850 text-cyan-300 border border-cyan-500/30 transition-colors text-center"
-              >
-                Observer Scout
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemo('admin')}
-                className="py-2 px-3 rounded-xl text-xs font-semibold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition-colors text-center"
-              >
-                Administrator Hub
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleQuickDemo}
+              className="w-full py-2 px-3 rounded-xl text-xs font-semibold bg-navy-900 hover:bg-navy-850 text-cyan-300 border border-cyan-500/30 transition-colors text-center flex items-center justify-center gap-2"
+            >
+              <span>Instant Demo Access as Observer Scout (Aditi Hegde)</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {error && (
